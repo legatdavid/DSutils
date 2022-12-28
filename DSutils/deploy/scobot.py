@@ -11,8 +11,8 @@ class ScoBot:
   def get_name(self):
     return self._model_name
   
-  def get_version(self)
+  def get_version(self):
     return self._model_name
   
-  def store(self, file=None)
+  def store(self, file=None):
     print("stored")
