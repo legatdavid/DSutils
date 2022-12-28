@@ -16,3 +16,4 @@ class ScoBot:
   
   def store(self, file=None):
     print("stored")
+    print("Test GIT")
