@@ -1,4 +1,6 @@
 # Databricks notebook source
+import pandas as pd
+
 class Metadata:
     _struct = pd.DataFrame(index=['name'],
                   columns=['type', 'level', 'role',
