@@ -1,5 +1,6 @@
 # Databricks notebook source
 import pandas as pd
+import pyspark.sql.functions as sf
 
 
 def Metadata(data=None, interval_thrs=20, missing_thrs=0.5, string_null=["XNA", ""], ):
