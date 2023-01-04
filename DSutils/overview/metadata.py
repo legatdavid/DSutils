@@ -1,14 +1,16 @@
 # Databricks notebook source
 import pandas as pd
+from pyspark.sql import SparkSession
 import pyspark.sql.functions as sf
 
 
 def Metadata(data=None, interval_thrs=20, missing_thrs=0.5, string_null=["XNA", ""], ):
+    
     if data == None:
         raise BaseException("Input attribute 'data' of function 'Meta' is mandatory.")
     if type(string_null) == "string":
         string_null=[string_null]
-
+    spark = SparkSession.getActiveSession()
     rec = data.count()
     meta = data.dtypes
     Metadata = spark.createDataFrame(meta, schema=["Column_Name", "Column_Type"])
