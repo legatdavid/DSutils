@@ -14,7 +14,7 @@ def Metadata(data=None, interval_thrs=20, missing_thrs=0.5, string_null=["XNA", 
     rec = data.count()
     meta = data.dtypes
     Metadata = spark.createDataFrame(meta, schema=["Column_Name", "Column_Type"])
-
+    print(meta)
     valno = spark.createDataFrame(data.groupby()
                                        .agg(*(sf.approxCountDistinct(sf.col(c[0])).alias(c[0]) for c in meta))
                                        .toPandas().T.reset_index(), 
@@ -26,7 +26,7 @@ def Metadata(data=None, interval_thrs=20, missing_thrs=0.5, string_null=["XNA", 
                                         .toPandas().T.reset_index(), 
                                    schema=["Column_Name","Missing_Count"]
                                   )
-    print(meta)
+
 #     if len([c for c in meta if (c[1]=='string')]) > 0:
 #         missno = missno.join(
 #                  spark.createDataFrame(data.groupby()
