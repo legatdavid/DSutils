@@ -8,6 +8,6 @@ setup(
     name="DSutils",
     packages=find_packages(include=["DSutils", "DSutils.*"]),
     version="0.1.0",
-    install_requires=['numpy', 'pandas'],
+    install_requires=[],
     python_requires=">=3.5",
 )
