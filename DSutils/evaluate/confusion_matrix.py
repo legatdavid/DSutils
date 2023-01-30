@@ -46,7 +46,7 @@ def grouped_stats(prediction=None, bins=10, labelCol="label", predictCol="probab
         bin_stats = bin_stats.withColumn("accuracy", (sf.col("TP") + sf.col("TN")) / totals["tot_num_subj"] )
     
     if precision | F1score is True:
-        bin_stats = bin_stats.withColumn("precision", sf.col("cum_sum_subj") + sf.col("TP")  / sf.col("cum_sum_subj") )
+        bin_stats = bin_stats.withColumn("precision", sf.col("TP")  / sf.col("cum_sum_subj") )
         
     if recall | F1score is True:
         bin_stats = bin_stats.withColumn("recall",  sf.col("TP")  / totals["tot_num_label"] )
