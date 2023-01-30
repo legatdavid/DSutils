@@ -1,6 +1,8 @@
 # Databricks notebook source
 from pyspark.sql import SparkSession
 import pyspark.sql.functions as sf
+from pyspark.ml.functions import vector_to_array
+from pyspark.sql.window import Window
 
 # COMMAND ----------
 
