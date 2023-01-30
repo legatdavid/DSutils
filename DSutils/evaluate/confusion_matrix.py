@@ -38,6 +38,6 @@ def grouped_stats(prediction=None, bins=10, labelCol="label", predictCol="predic
         
     if cum_lift is True:
         avg_lead_rate = bin_stats.filter(sf.col("rank") == 10).select("cum_avg_label").collect()[0][0]
-        bin_stats = (bin_stats
-             .withColumn("cum_lift", sf.col("cum_avg_label").cast("double") / avg_lead_rate)
+        bin_stats = bin_stats.withColumn("cum_lift", sf.col("cum_avg_label").cast("double") / avg_lead_rate)
+                    
 
