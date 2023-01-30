@@ -6,7 +6,7 @@ from pyspark.sql.window import Window
 
 # COMMAND ----------
 
-def grouped_stats(prediction=None, bins=10, labelCol="label", predictCol="prediction", confusion_matrix=True, cum_lift=True, accuracy=False, precision=False, recall=False, sensitivity=False, specidficity=False ):
+def grouped_stats(prediction=None, bins=10, labelCol="label", predictCol="probability", confusion_matrix=True, cum_lift=True, accuracy=False, precision=False, recall=False, F1score=False):
 
     prediction = prediction.withColumn("prob1", sf.element_at(vector_to_array(predictCol), 2))
     bin_stats = (prediction.withColumn("rank", sf.ntile(10).over(Window.orderBy(sf.desc("prob1"))))
@@ -27,7 +27,7 @@ def grouped_stats(prediction=None, bins=10, labelCol="label", predictCol="predic
                          )
             )
     
-    if confusion_matrix is True:
+    if confusion_matrix | accuracy | precision | recall | F1score is True:
         totals = bin_stats.agg(sf.sum("num_subj").alias("tot_num_subj"),
                                sf.sum("num_label").alias("tot_num_label")
                               ).collect()[0]
@@ -41,5 +41,17 @@ def grouped_stats(prediction=None, bins=10, labelCol="label", predictCol="predic
     if cum_lift is True:
         avg_lead_rate = bin_stats.filter(sf.col("rank") == 10).select("cum_avg_label").collect()[0][0]
         bin_stats = bin_stats.withColumn("cum_lift", sf.col("cum_avg_label").cast("double") / avg_lead_rate)
-                    
+        
+    if accuracy is True:
+        bin_stats = bin_stats.withColumn("accuracy", (sf.col("TP") + sf.col("TN")) / totals["tot_num_subj"] )
+    
+    if precision | F1score is True:
+        bin_stats = bin_stats.withColumn("precision", sf.col("TP")  / sf.col("cum_sum_label") )
+        
+    if recall | F1score is True:
+        bin_stats = bin_stats.withColumn("recall",  sf.col("TP")  / totals["tot_num_label"] )
+        
+    if F1score is True:
+        bin_stats = bin_stats.withColumn("F1score", 2 * (sf.col("precision") * sf.col("recall")) / (sf.col("precision") + sf.col("recall")) )
+    
     return bin_stats
