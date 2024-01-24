@@ -1,6 +1,6 @@
 # Databricks notebook source
-import deploy
-import evaluate
-import learn
-import overview
-import preprocess
+import DSutils.deploy
+import DSutils.evaluate
+import DSutils.learn
+import DSutils.overview
+import DSutils.preprocess
