@@ -13,8 +13,8 @@ def RFNumFeatureSelector(
     pipe = [VectorAssembler(inputCols=inputCols ,outputCol='features'),
             RandomForestClassifier(featuresCol='features', labelCol=labelCol, numTrees=10, maxDepth=10, subsamplingRate=0.7)]
     pipeline = Pipeline(stages=pipe)
-    model = pipeline.fit(train_sample)
-    scored = model.transform(train_sample)
+    model = pipeline.fit(df)
+    scored = model.transform(df)
 
     importances=model.stages[-1].featureImportances
     list_extract = []
@@ -25,7 +25,7 @@ def RFNumFeatureSelector(
     varlist['feature'] = varlist['name'].apply(lambda x: x[:(x+'_enc').index('_enc')])
     FeatureImportance = varlist.groupby('feature', as_index=False).sum('score').sort_values('score', ascending = False)
     FeatureImportance = FeatureImportance.assign(row_number=range(len(FeatureImportance)))
-    numerical_features = list(FeatureImportance[FeatureImportance['feature'].isin(continuous_cols) & (FeatureImportance['row_number'] < numfeaatures)]['feature'])
+    numerical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputCols) & (FeatureImportance['row_number'] < numfeaatures)]['feature'])
     
     return numerical_features
 
@@ -48,8 +48,8 @@ def RFFeatureSelector(
     pipe.append(VectorAssembler(inputCols=[x+'_enc' for x in inputCategoryCols] + list(inputNumericCols) ,outputCol='features'))
     pipe.append(RandomForestClassifier(featuresCol='features', labelCol=labelCol, numTrees=10, maxDepth=10, subsamplingRate=0.7))
     pipeline = Pipeline(stages=pipe)
-    model = pipeline.fit(train_sample)
-    scored = model.transform(train_sample)
+    model = pipeline.fit(df)
+    scored = model.transform(df)
 
     importances=model.stages[-1].featureImportances
     list_extract = []
@@ -60,7 +60,7 @@ def RFFeatureSelector(
     varlist['feature'] = varlist['name'].apply(lambda x: x[:(x+'_enc').index('_enc')])
     FeatureImportance = varlist.groupby('feature', as_index=False).sum('score').sort_values('score', ascending = False)
     FeatureImportance = FeatureImportance.assign(row_number=range(len(FeatureImportance)))
-    categorical_features = list(FeatureImportance[FeatureImportance['feature'].isin(categorical_cols) & (FeatureImportance['row_number'] < features_RF)]['feature']) 
-    numerical_features = list(FeatureImportance[FeatureImportance['feature'].isin(continuous_cols) & (FeatureImportance['row_number'] < features_RF)]['feature'])
+    categorical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputCategoryCols) & (FeatureImportance['row_number'] < numfeaatures)]['feature']) 
+    numerical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputNumericCols) & (FeatureImportance['row_number'] < numfeaatures)]['feature'])
 
     return categorical_features, numerical_features

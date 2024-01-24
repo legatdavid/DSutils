@@ -1,4 +1,6 @@
 # Databricks notebook source
+import pyspark.sql.functions as sf
+
 def lift_curve_spark(
     df_predictions,
     bin_count: int = 10,
@@ -7,16 +9,14 @@ def lift_curve_spark(
 ):
   from pyspark.sql.window import Window
   from pyspark.ml.functions import vector_to_array
-
+  
   if type(bin_count) != int or bin_count < 0:
       raise ValueError("Invalid 'bin_count' param value.Expected int >= 0, got '{}'.".format(bin_count))
 
   if not probability_col:
       if "rawPrediction" in df_predictions.columns:
-          logging.info("'probability_col' not provided, found 'rawPrediction', using 'probability'.")
           probability_col = sf.element_at(vector_to_array("probability"), 2)
       elif "prediction" in df_predictions.columns:
-          logging.info("'probability_col' not provided, haven't found 'rawPrediction', using 'prediction'.")
           probability_col = sf.col("prediction")
       else:
           raise ValueError("Param 'probability_col' not supplied and could not infer column name.")

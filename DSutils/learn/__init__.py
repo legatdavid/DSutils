@@ -54,6 +54,6 @@ def BestGBTClassifier(
       .build())
     eval = BinaryClassificationEvaluator(labelCol=labelCol)
     tvs = TrainValidationSplit(estimator=pipeline, estimatorParamMaps=parms, evaluator=eval, trainRatio=0.7)
-    model = tvs.fit(train).bestModel
+    model = tvs.fit(df_train).bestModel
 
     return model
