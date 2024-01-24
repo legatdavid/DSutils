@@ -1,12 +1,11 @@
 # Databricks notebook source
-import pyspark.sql.functions as sf
-
 def lift_curve_spark(
     df_predictions,
     bin_count: int = 10,
     label_col: str = "label",
     probability_col: str = None,
 ):
+  import pyspark.sql.functions as sf
   from pyspark.sql.window import Window
   from pyspark.ml.functions import vector_to_array
   
@@ -60,6 +59,7 @@ def ClassifierValidation(
     model,
     label_col: str = "label",
 ):
+  import pyspark.sql.functions as sf
   from pyspark.ml.evaluation import BinaryClassificationEvaluator
 
   scored = model.transform(df_validation).select(label_col, "probability")
