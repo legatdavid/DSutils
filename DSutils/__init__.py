@@ -1,5 +1,5 @@
 # Databricks notebook source
-import deply
+import deploy
 import evaluate
 import learn
 import overview
