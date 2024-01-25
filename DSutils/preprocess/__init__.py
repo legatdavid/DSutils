@@ -8,6 +8,10 @@ def UnivarNumFeatureSelector(
     from pyspark.ml.feature import VectorAssembler, UnivariateFeatureSelector
     from pyspark.ml import Pipeline
     
+    ufs = UnivariateFeatureSelector(featuresCol='features', labelCol=labelCol, outputCol="selectedFeatures")
+    ufs.setFeatureType("continuous").setLabelType("categorical").setSelectionThreshold(numfeaatures)
+
+
 
     return 1
 
