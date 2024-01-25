@@ -11,9 +11,11 @@ def UnivarNumFeatureSelector(
     ufs = UnivariateFeatureSelector(featuresCol='features', labelCol=labelCol, outputCol="selectedFeatures")
     ufs.setFeatureType("continuous").setLabelType("categorical").setSelectionThreshold(numfeaatures)
 
+    pipe = [VectorAssembler(inputCols=inputCols ,outputCol='features'), ufs]
+    pipeline = Pipeline(stages=pipe)
+    model = pipeline.fit(df)
 
-
-    return 1
+    return model.stages[-1].selectedFeatures
 
 # COMMAND ----------
 
