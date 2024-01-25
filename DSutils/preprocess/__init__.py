@@ -1,5 +1,12 @@
 # Databricks notebook source
+def UnivarNumFeatureSelector(
+    df,
+    inputCols: list = None,
+    labelCol: str = "label",
+    numfeaatures: int = 100,
+):
 
+    return 1
 
 # COMMAND ----------
 
