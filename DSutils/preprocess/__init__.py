@@ -9,7 +9,7 @@ def UnivarNumFeatureSelector(
     from pyspark.ml import Pipeline
     
     ufs = UnivariateFeatureSelector(featuresCol='features', labelCol=labelCol, outputCol="selectedFeatures")
-    ufs.setFeatureType("continuous").setLabelType("categorical").setSelectionThreshold(numfeaatures)
+    ufs.setFeatureType("continuous").setLabelType("categorical").setSelectionThreshold(numFeatures)
 
     pipe = [VectorAssembler(inputCols=inputCols ,outputCol='features'), ufs]
     pipeline = Pipeline(stages=pipe)
@@ -45,7 +45,7 @@ def RFNumFeatureSelector(
     varlist['feature'] = varlist['name'].apply(lambda x: x[:(x+'_enc').index('_enc')])
     FeatureImportance = varlist.groupby('feature', as_index=False).sum('score').sort_values('score', ascending = False)
     FeatureImportance = FeatureImportance.assign(row_number=range(len(FeatureImportance)))
-    numerical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputCols) & (FeatureImportance['row_number'] < numfeaatures)]['feature'])
+    numerical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputCols) & (FeatureImportance['row_number'] < numFeatures)]['feature'])
     
     return numerical_features
 
@@ -80,7 +80,7 @@ def RFFeatureSelector(
     varlist['feature'] = varlist['name'].apply(lambda x: x[:(x+'_enc').index('_enc')])
     FeatureImportance = varlist.groupby('feature', as_index=False).sum('score').sort_values('score', ascending = False)
     FeatureImportance = FeatureImportance.assign(row_number=range(len(FeatureImportance)))
-    categorical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputCategoryCols) & (FeatureImportance['row_number'] < numfeaatures)]['feature']) 
-    numerical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputNumericCols) & (FeatureImportance['row_number'] < numfeaatures)]['feature'])
+    categorical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputCategoryCols) & (FeatureImportance['row_number'] < numFeatures)]['feature']) 
+    numerical_features = list(FeatureImportance[FeatureImportance['feature'].isin(inputNumericCols) & (FeatureImportance['row_number'] < numFeatures)]['feature'])
 
     return categorical_features, numerical_features
