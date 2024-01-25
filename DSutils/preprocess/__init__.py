@@ -15,7 +15,7 @@ def UnivarNumFeatureSelector(
     pipeline = Pipeline(stages=pipe)
     model = pipeline.fit(df)
 
-    return model.stages[-1].selectedFeatures
+    return [inputCols[i] for i in model.stages[-1].selectedFeatures]
 
 # COMMAND ----------
 
