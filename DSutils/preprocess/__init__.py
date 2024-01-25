@@ -3,7 +3,7 @@ def UnivarNumFeatureSelector(
     df,
     inputCols: list = None,
     labelCol: str = "label",
-    numfeaatures: int = 100,
+    numFeatures: int = 100,
 ):
     from pyspark.ml.feature import VectorAssembler, UnivariateFeatureSelector
     from pyspark.ml import Pipeline
@@ -23,7 +23,7 @@ def RFNumFeatureSelector(
     df,
     inputCols: list = None,
     labelCol: str = "label",
-    numfeaatures: int = 100,
+    numFeatures: int = 100,
 ):
     import pandas as pd
     from pyspark.ml.feature import VectorAssembler
@@ -56,7 +56,7 @@ def RFFeatureSelector(
     inputCategoryCols: list = None,
     inputNumericCols: list = None,
     labelCol: str = "label",
-    numfeaatures: int = 100,
+    numFeatures: int = 100,
 ):
     import pandas as pd
     from pyspark.ml.feature import VectorAssembler, OneHotEncoder, StringIndexer
