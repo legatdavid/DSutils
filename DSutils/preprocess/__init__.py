@@ -5,6 +5,9 @@ def UnivarNumFeatureSelector(
     labelCol: str = "label",
     numfeaatures: int = 100,
 ):
+    from pyspark.ml.feature import VectorAssembler, UnivariateFeatureSelector
+    from pyspark.ml import Pipeline
+    
 
     return 1
 
