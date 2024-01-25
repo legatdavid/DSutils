@@ -1,21 +1,5 @@
 # Databricks notebook source
-def UnivarNumFeatureSelector(
-    df,
-    inputCols: list = None,
-    labelCol: str = "label",
-    numfeaatures: int = 100,
-):
-    import pandas as pd
-    from pyspark.ml.feature import VectorAssembler, UnivariateFeatureSelector
-    from pyspark.ml import Pipeline
-    
-    ufs = UnivariateFeatureSelector(featuresCol='features', labelCol=labelCol, outputCol="selectedFeatures")
-    ufs.setFeatureType("continuous").setLabelType("categorical").setSelectionThreshold(numfeaatures)
 
-    pipe = [VectorAssembler(inputCols=inputCols ,outputCol='features'), ufs]
-    pipeline = Pipeline(stages=pipe)
-    model = pipeline.fit(train_sample)
-    return model.stages[-1].selectedFeatures
 
 # COMMAND ----------
 
