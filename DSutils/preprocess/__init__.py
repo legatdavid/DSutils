@@ -31,7 +31,7 @@ def RFNumFeatureSelector(
     from pyspark.ml import Pipeline
     
     pipe = [VectorAssembler(inputCols=inputCols ,outputCol='features'),
-            RandomForestClassifier(featuresCol='features', labelCol=labelCol, numTrees=10, maxDepth=10, subsamplingRate=0.7)]
+            RandomForestClassifier(featuresCol='features', labelCol=labelCol, numTrees=5, maxDepth=8, subsamplingRate=0.7)]
     pipeline = Pipeline(stages=pipe)
     model = pipeline.fit(df)
     scored = model.transform(df)
@@ -63,10 +63,10 @@ def RFFeatureSelector(
     from pyspark.ml.classification import RandomForestClassifier
     from pyspark.ml import Pipeline
 
-    pipe = [StringIndexer(inputCol=x , outputCol=x+'_idx') for x in inputCategoryCols]
+    pipe = [StringIndexer(inputCol=x , outputCol=x+'_idx', handleInvalid = 'keep') for x in inputCategoryCols]
     pipe.extend([OneHotEncoder(inputCol=x+'_idx', outputCol=x+'_enc') for x in inputCategoryCols])
     pipe.append(VectorAssembler(inputCols=[x+'_enc' for x in inputCategoryCols] + list(inputNumericCols) ,outputCol='features'))
-    pipe.append(RandomForestClassifier(featuresCol='features', labelCol=labelCol, numTrees=10, maxDepth=10, subsamplingRate=0.7))
+    pipe.append(RandomForestClassifier(featuresCol='features', labelCol=labelCol, numTrees=5, maxDepth=8, subsamplingRate=0.7))
     pipeline = Pipeline(stages=pipe)
     model = pipeline.fit(df)
     scored = model.transform(df)
